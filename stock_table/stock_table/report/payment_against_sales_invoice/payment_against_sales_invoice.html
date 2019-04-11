@@ -1,0 +1,38 @@
+<h1 class="text-center">Indian center intl electrical Co. W. L. L</h1>
+<h3 class="text-center">Payment Against Sales Invoice</h3>
+<h6 class="text-center">Customer : {{ filters.customer }}</h6>
+
+<table class="table table-bordered">
+    <tr>
+      <th style="width:2%">Sr No</th>
+      <th style="width:4%">Voucher Type</th>
+      <th style="width:7%">Voucher Number</th>
+      <th style="width:7%">Party Type</th>
+      <th style="width:7%">Party Name</th>
+      <th style="width:7%">Payment Entry</th>
+      <th style="width:6%">Mode of Payment</th>
+      <th style="width:8%">Refrence No</th>
+      <th style="width:8%">Date</th>
+      <th style="width:9%">Total Amount\</th>
+      <th style="width:9%">Outstanding Amount</th>
+      <th style="width:9%">Allocated Amount</th>
+      <th style="width:17%">Remarks</th>
+    </tr>
+         {% for(var i=0, l=data.length; i<l; i++) { %}
+             <tr>
+                 <td style="text-align: center;">{%= i+1 %}</td>
+                 <td>{%= data[i][__("Voucher Type")] %}</td>
+                 <td>{%= data[i][__("Voucher Number")] %}</td>
+                 <td>{%= data[i][__("Party Type")] %}</td>
+                 <td>{%= data[i][__("Party Name")] %}</td>
+                 <td>{%= data[i][__("Payment Entry")] %}</td>
+                 <td>{%= data[i][__("Mode of Payment")] %}</td>
+		 <td>{%= data[i][__("Refrence No")] %}</td>
+		 <td>{%= dateutil.str_to_user(data[i][__("Date")]) %}</td>
+                 <td>{%= format_currency(data[i][__("Total Amount")]) %}</td>
+		 <td>{%= format_currency(data[i][__("Outstanding Amount")]) %}</td>
+		 <td>{%= format_currency(data[i][__("Allocated Amount")]) %}</td>
+		 <td>{%= data[i][__("Remarks")] %}</td>
+             </tr>
+         {% } %}
+ </table>

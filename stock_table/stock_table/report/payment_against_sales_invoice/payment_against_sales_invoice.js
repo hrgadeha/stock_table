@@ -6,7 +6,7 @@ frappe.query_reports["Payment Against Sales Invoice"] = {
 	"filters": [
 		{
 		    "fieldname": "customer",
-	            "label": __("Select Customer"),
+	            "label": __("Customer Name"),
 	            "fieldtype": "Link",
 		    "options": "Customer"
 		}
