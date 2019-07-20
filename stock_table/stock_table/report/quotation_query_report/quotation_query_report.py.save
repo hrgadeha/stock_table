@@ -1,0 +1,29 @@
+# Copyright (c) 2013, frappe and contributors
+# For license information, please see license.txt
+
+from __future__ import unicode_literals
+import frappe
+from frappe import _
+
+def execute(filters=None):
+	columns = get_column()
+	data = get_data(filters)
+	return columns,data
+
+def get_column():
+	return [_("Item Name") + ":Data:180",_("Discription") + ":Data:180",_("Brand") + ":Data:80",_("UOM") + ":Data:80",_("Sales Price") + ":Currency:100",_("Valuation Rate") + ":Currency:100",_("Last Quoted Price") + ":Currency:140",_("Last Sold Price") + ":Currency:100"]
+
+def get_data(filters):
+	if filters.get("customer","item"):
+		customer = filters.get("customer")
+		item = filters.get("item")
+		item_data = frappe.db.sql("""select item_name,description,brand,stock_uom,standard_rate,
+		(select valuation_rate	from `tabStock Ledger Entry` where item_code =  '{1}' and is_cancelled='No' order by posting_date desc, posting_time desc, name desc limit 1),
+		(select qitem.rate from `tab` qitem,`tabQuotation` qt
+		where qitem.parent = qt.name and qitem.item_code = '{1}'  and qt.customer = '{0}'
+		order by qt.creation desc limit 1),
+		(select sitem.rate from `tabSales Invoice Item` sitem,`tabSales Invoice` si
+		where sitem.parent = si.name and sitem.item_code = '{1}'  and si.customer = '{0}'
+		order by si.creation desc limit 1)
+from `tabItem` where  item_code =  '{1}'; """.format(customer,item), as_list=1)
+		return item_data
